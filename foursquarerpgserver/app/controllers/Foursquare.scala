@@ -13,7 +13,7 @@ object Foursquare extends Controller {
 //	      request => values = request.body.asFormUrlEncoded.get;
     println(code)
     	
-		Redirect(fsq.getAuthenticationUrl());
+		Redirect(fsq.authenticateCode(code).toString);
 	}
 		def redirectPost = Action {
 //	      request => values = request.body.asFormUrlEncoded.get;
