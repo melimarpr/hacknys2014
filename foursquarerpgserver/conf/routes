@@ -4,11 +4,11 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET		/redirect					controllers.Foursquare.redirectGet
+GET		/redirect					controllers.Foursquare.redirectGet(code: String)
 GET		/handle_push				controllers.Foursquare.handlePush
 POST	/redirect					controllers.Foursquare.redirectPost
 POST	/handle_push				controllers.Foursquare.handlePush
-GET		/redirect/					controllers.Foursquare.redirectGet
+GET		/redirect/					controllers.Foursquare.redirectGet(code: String)
 GET		/handle_push/				controllers.Foursquare.handlePush
 POST	/redirect/					controllers.Foursquare.redirectPost
 POST	/handle_push/				controllers.Foursquare.handlePush

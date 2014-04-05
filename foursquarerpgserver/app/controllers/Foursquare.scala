@@ -9,9 +9,9 @@ object Foursquare extends Controller {
 		val fsq = new FoursquareApi(FoursquareCredentials.CLIENT_ID, FoursquareCredentials.CLIENT_SECRET, FoursquareCredentials.PUSH_SECRET);
 		fsq.setoAuthToken(FoursquareCredentials.OAUTH_KEY);
 		var values: Map[String, Seq[String]] = _;
-	def redirectGet = Action {
+	def redirectGet(code: String) = Action {
 //	      request => values = request.body.asFormUrlEncoded.get;
-    println(values)
+    println(code)
     	
 		Redirect(fsq.getAuthenticationUrl());
 	}
