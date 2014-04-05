@@ -4,13 +4,13 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET		/redirect					controllers.Foursquare.redirect
+GET		/redirect					controllers.Foursquare.redirectGet
 GET		/handle_push				controllers.Foursquare.handlePush
-POST	/redirect					controllers.Foursquare.redirect
+POST	/redirect					controllers.Foursquare.redirectPost
 POST	/handle_push				controllers.Foursquare.handlePush
-GET		/redirect/					controllers.Foursquare.redirect
+GET		/redirect/					controllers.Foursquare.redirectGet
 GET		/handle_push/				controllers.Foursquare.handlePush
-POST	/redirect/					controllers.Foursquare.redirect
+POST	/redirect/					controllers.Foursquare.redirectPost
 POST	/handle_push/				controllers.Foursquare.handlePush
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
