@@ -28,6 +28,7 @@ object Foursquare extends Controller {
 			val response = http.execute();
 			if (response.getStatusCode() == 200) {
 				val responseObject = new JSONObject(response.getContent());
+				println(responseObject.toString())
 				val token = responseObject.getString("access_token");
 				Ok("{\"token\":" +token +  "}").as("application/json");
 			} else {

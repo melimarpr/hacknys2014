@@ -6,7 +6,7 @@
 GET     /                           controllers.Application.index
 GET		/some						controllers.Foursquare.some
 GET		/redirect					controllers.Foursquare.redirectGet(code: String)
-GET /redirectAnd					controllers.Foursquare.redirectGetAndroid(code)
+GET 	/redirectAnd					controllers.Foursquare.redirectGetAndroid(code)
 GET		/handle_push				controllers.Foursquare.handlePush
 POST	/redirect					controllers.Foursquare.redirectPost
 POST	/handle_push				controllers.Foursquare.handlePush
