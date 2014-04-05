@@ -4,14 +4,12 @@ import fi.foyt.foursquare.api.FoursquareApi
 import other._
 import play.api._
 import play.api.mvc._
-import com.google.api.client.http.HttpRequest
-import com.google.api.client.http.javanet.NetHttpRequest
-import com.google.api.client.http.javanet.NetHttpTransport
-import com.google.api.client.http.GenericUrl
 import org.json.JSONObject
 import java.io.IOException
 import org.json.JSONException
 import fi.foyt.foursquare.api.FoursquareApiException
+import com.google.api.client.http.javanet.NetHttpTransport
+import com.google.api.client.http.GenericUrl
 
 object Foursquare extends Controller {
 	val fsq = new FoursquareApi(FoursquareCredentials.CLIENT_ID, FoursquareCredentials.CLIENT_SECRET, FoursquareCredentials.PUSH_SECRET);
