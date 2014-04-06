@@ -120,8 +120,8 @@ object Foursquare extends Controller {
 		val user = Database.getUser(userId);
 		val enemy = Database.getEnemy(enemyId);
 		battleType match {
-		case "playerAttack" => { user.stamina -= 1; enemy.hp = Math.max( user.attack - enemy.defense,1); user.hp = Math.max(enemy.attack - user.defense,1)}
-		case "playerDefense" => { user.hp = Math.max(enemy.attack - user.defense * 2,1); user.stamina += 1}
+		case "playerAttack" => { user.stamina -= 1; enemy.hp -= Math.max( user.attack - enemy.defense,1); user.hp -= Math.max(enemy.attack - user.defense,1)}
+		case "playerDefense" => { user.hp -= Math.max(enemy.attack - user.defense * 2,1); user.stamina += 1}
 		}
 		val map = Map("userHP" -> user.hp, "userStam" -> user.stamina, "enemyHP" -> enemy.hp);
 		Database.updateEnemy(enemy);
