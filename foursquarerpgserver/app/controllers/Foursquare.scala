@@ -39,8 +39,8 @@ object Foursquare extends Controller {
 	  Ok(gson.toJson(Database.addUser(username, token)))
 	}
 	def handlePush = Action {
-		request => val json = request.body.asJson;
-		println(json);
+		request => val values = request.body.asFormUrlEncoded.get;
+		println(values);
 		Ok("This is /handle_push.");
 	}
 	
