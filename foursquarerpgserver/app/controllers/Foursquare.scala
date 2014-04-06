@@ -44,7 +44,7 @@ object Foursquare extends Controller {
 	def handlePush = Action {
 		request => val values = request.body.asFormUrlEncoded.get;
 		println(values);
-		val checkinId = values.get("checkin").get(0)
+		val checkinId = values.get("checkin").get(0);
 				val js = Json.parse(checkinId);
 		val fsqVenueId = js.\("venue").\("id").as[String];
 		val categoryList:List[String] = (js.\\("parents")(0).as[List[String]]);
@@ -58,19 +58,20 @@ object Foursquare extends Controller {
 			Database.addVenue(fsqVenueId, category, name);
 			dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
 		}
-		sendPush();
+		val enemyName = "MyEnemyName"
+		sendPush(enemyName);
 		Ok(views.html.index("Success!"))
 	}
 
 	def getUserGet(username: String) = Action {
 		Ok(gson.toJson(Database.getUser(username)));
 	}
-	def sendPush() {
+	def sendPush(enemyName: String) {
 		val str = "{\"registration_ids\":[\"APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE\"]}";
 		val generic = new GenericData();
 		generic.put("registration_ids", Array("APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE"))
 		val otherGeneric = new GenericData();
-		otherGeneric.put("algo", "someOther");
+		otherGeneric.put("key", enemyName);
 		generic.put("data", otherGeneric);
 		val json = new JsonHttpContent(new JacksonFactory(),generic);
 		val post = requestFactory.buildPostRequest(new GenericUrl("https://android.googleapis.com/gcm/send"), json);
