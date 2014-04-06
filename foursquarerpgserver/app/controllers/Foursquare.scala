@@ -64,11 +64,15 @@ object Foursquare extends Controller {
 			dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
 		}
 		val enemyOption = Database.getVenueEnemy(fsqVenueId);
-		var enemy = 	if(enemyOption.isDefined) {
-			enemyOption.get;
+		var enemy:Enemy = null;	
+		if(enemyOption.isDefined) {
+			enemy = enemyOption.get;
 		} else {
-			Database.makeEnemy("", 10, 10, 10, 10);
+			enemy = Database.makeEnemy("", 10, 10, 10, 10);
+			Database.addEnemyToVenue(enemy.id, fsqVenueId);
+			
 		}
+		
 		val monsterIntId = enemy.id;
 		val enemyName = enemy.name;
 		sendPush(enemyName,monsterIntId, userId.toString.replace("\"", "").toInt);
