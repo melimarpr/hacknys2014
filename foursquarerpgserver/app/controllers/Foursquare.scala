@@ -14,6 +14,7 @@ import scala.collection.mutable.HashMap
 import com.google.api.client.http.HttpHeaders
 import fi.foyt.foursquare.api.entities.Checkin
 import play.api.libs.json.Json
+import org.json.JSONObject
 
 object Foursquare extends Controller {
 	val fsq = new FoursquareApi(FoursquareCredentials.CLIENT_ID, FoursquareCredentials.CLIENT_SECRET, FoursquareCredentials.PUSH_SECRET);
@@ -64,10 +65,7 @@ object Foursquare extends Controller {
 	  Ok(gson.toJson(Database.getUser(username)));
 	}
 	def sendPush() {
-		val map = new HashMap[String,Array[String]]();
-		map += "registrations_ids" -> Array("APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE");
-		println(map);
-		val json = new JsonHttpContent(new JacksonFactory(), "{\"registration_ids\":[\"APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE\"]}");
+		val json = new JsonHttpContent(new JacksonFactory(), new JSONObject("{\"registration_ids\":[\"APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE\"]}"));
 		val post = requestFactory.buildPostRequest(new GenericUrl("https://android.googleapis.com/gcm/send"), json);
 		val header = new HttpHeaders();
 		header.setContentType("application/json");
