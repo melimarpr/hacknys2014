@@ -117,7 +117,7 @@ object Foursquare extends Controller {
 
 	}
 	def doBattle(userId: Int, enemyId: Int, battleType: String) = Action {
-		val user = Database.getUser(userId);
+		val user = Database.getUser(userId.toString);
 		val enemy = Database.getEnemy(enemyId);
 		battleType match {
 		case "playerAttack" => { user.stamina -= 1; enemy.hp -= Math.max( user.attack - enemy.defense,1); user.hp -= Math.max(enemy.attack - user.defense,1)}
