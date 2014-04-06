@@ -168,7 +168,7 @@ object Database {
 	}
 	def getVenueEnemy(venueId: String): Option[Enemy] = {
 			val conn = sessionFactory.getConnection();
-			val statement = conn.prepareStatement("SELECT enemy.* from venue v, `foursquarerpg`.`enemy` e WHERE v.venue_id = '"+venueId+"' AND v.enemy_id = e.id");
+			val statement = conn.prepareStatement("SELECT e.* from venue v, `foursquarerpg`.`enemy` e WHERE v.venue_id = '"+venueId+"' AND v.enemy_id = e.id");
 			val rs = statement.executeQuery();
 			if(rs.next()) {
 				val enemy = new Enemy();
