@@ -192,7 +192,7 @@ object Database {
 				"`defense` = "+user.defense+", " +
 				"`hp` = "+user.hp+", " +
 				"`exp` = "+user.experience+ " "  +
-				"HERE `id` = "+user.id+";");
+				"WHERE `id` = "+user.id+";");
 		statement.executeUpdate();
 
 	}
@@ -203,7 +203,7 @@ object Database {
 				"`attack` = "+ enemy.attack +", " +
 				"`defense` = "+enemy.defense+", " +
 				"`hp` = "+enemy.hp+" " +
-				"HERE `id` = "+enemy.id+";");
+				"WHERE `id` = "+enemy.id+";");
 		statement.executeUpdate();
 
 	}
