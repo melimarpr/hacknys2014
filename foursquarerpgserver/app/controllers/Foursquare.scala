@@ -56,7 +56,7 @@ object Foursquare extends Controller {
 					Database.addVenue(fsqVenueId, category, name);
 					dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
 				}
-
+				sendPush();
 				Ok(views.html.index("Success!"))
 	}
 	
