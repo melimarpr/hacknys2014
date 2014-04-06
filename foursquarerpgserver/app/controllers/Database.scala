@@ -4,16 +4,17 @@ import play.api.Play.current
 import play.api.db._
 import play.api.mvc._
 import hibernate.UserDto
+import classes.Enemy
 
 object Database {
 	val sessionFactory = DB.getDataSource();
 	println(sessionFactory.getConnection().prepareStatement("SELECT * FROM user").executeQuery().next());
 	def f() {}
 	def addUser(username:String, token: String): UserDto = {
-	  val someUser = getUser(username);
-	  if(someUser.id > 0) {
-	    return someUser;
-	  }
+			val someUser = getUser(username);
+			if(someUser.id > 0) {
+				return someUser;
+			}
 			val conn = sessionFactory.getConnection();
 			val statement = conn.prepareStatement("INSERT INTO `foursquarerpg`.`user` " +
 					"(`username`, " +
@@ -37,13 +38,13 @@ object Database {
 			getUser(getMaxUser);
 	}
 	def getMaxUser(): Int = {
-	  val conn = sessionFactory.getConnection();
-	  val statement = conn.prepareStatement("select max(id) from user u");
-	  val rs = statement.executeQuery();
-	  if(rs.next()) {
-	    rs.getInt("max(id)");
-	  }
-	  else -1
+			val conn = sessionFactory.getConnection();
+			val statement = conn.prepareStatement("select max(id) from user u");
+			val rs = statement.executeQuery();
+			if(rs.next()) {
+				rs.getInt("max(id)");
+			}
+			else -1
 	}
 	def getUser(id: Int): UserDto = {
 			val conn = sessionFactory.getConnection();
@@ -64,7 +65,7 @@ object Database {
 			}
 			user
 	}
-		def getUser(username: String): UserDto = {
+	def getUser(username: String): UserDto = {
 			val conn = sessionFactory.getConnection();
 			val statement = conn.prepareStatement("SELECT * FROM user u WHERE u.username = ?");
 			statement.setString(1,username);
@@ -114,31 +115,72 @@ object Database {
 				conn.close();
 			}
 	}
-//	def makeEnemy(name: String, attack: Int, defense: Int, hp: Int, exp: Int): EnemyDto = {
-//	  val someUser = getUser(username);
-//	  if(someUser.id > 0) {
-//	    return someUser;
-//	  }
-//			val conn = sessionFactory.getConnection();
-//			val statement = conn.prepareStatement("INSERT INTO `foursquarerpg`.`user` " +
-//					"(`username`, " +
-//					"`token`, " +
-//					"`hp`, "+ 
-//					"`attack`, " +
-//					"`defense`, " +
-//					"`stamina`, " +
-//					"`exp`, " +
-//					"`gold`) " +
-//					"VALUES " +
-//					"('" + username + "', " +
-//					"'" + token + "', " +
-//					"10, " +
-//					"10, " +
-//					"10, " +
-//					"10, " +
-//					"10, " +
-//					"10);");
-//			statement.execute();
-//			getUser(getMaxUser);
-//	}
+	def addEnemyToVenue(enemyId: Int, venueId: String) {
+		val venue = getVenueIdFromFsqVenueId(venueId);
+		val conn = sessionFactory.getConnection();
+		val statement = conn.prepareStatement("UPDATE `foursquarerpg`.`venue` " +
+				"SET " +
+				"`enemy_id` = "+enemyId+" " +
+				"WHERE `id` = "+venue+";");
+		statement.executeUpdate();
+	}
+	def makeEnemy(name: String, attack: Int, defense: Int, hp: Int, exp: Int): Enemy = {
+			val conn = sessionFactory.getConnection();
+			val statement = conn.prepareStatement("INSERT INTO `foursquarerpg`.`enemy` " + 
+					"(`name`, " +
+					"`attack`, " +
+					"`defense`, " +
+					"`hp`, " +
+					"`exp`) " +
+					"VALUES " +
+					"('" + name + "', " +
+					attack + ", " +
+					defense + ", " +
+					hp + ", " +
+					exp + "); ");
+			statement.execute();
+			getEnemy(getMaxEnemy);
+	}
+	def getMaxEnemy(): Int = {
+			val conn = sessionFactory.getConnection();
+			val statement = conn.prepareStatement("select max(id) from enemy");
+			val rs = statement.executeQuery();
+			if(rs.next()) {
+				rs.getInt("max(id)");
+			}
+			else -1;
+	}
+	def getEnemy(id: Int): Enemy = {
+			val conn = sessionFactory.getConnection();
+			val statement = conn.prepareStatement("SELECT * FROM user u WHERE u.id = ?");
+			statement.setInt(1, id);
+			val rs = statement.executeQuery();
+			val enemy = new Enemy();
+			while(rs.next()) {
+				enemy.id = (rs.getInt("id"));
+				enemy.name = (rs.getString("username"));
+				enemy.attack = (rs.getInt("attack"));
+				enemy.defense = (rs.getInt("defense"));
+				enemy.hp = (rs.getInt("hp"));
+				enemy.exp = (rs.getInt("exp"));
+			}
+			enemy
+	}
+	def getVenueEnemy(venueId: String): Option[Enemy] = {
+			val conn = sessionFactory.getConnection();
+			val statement = conn.prepareStatement("SELECT enemy.* from venue v, enemy e WHERE v.venue_id = '"+venueId+"' AND v.enemy_id = e.id");
+			val rs = statement.executeQuery();
+			if(rs.next()) {
+				val enemy = new Enemy();
+				enemy.id = (rs.getInt("id"));
+				enemy.name = (rs.getString("username"));
+				enemy.attack = (rs.getInt("attack"));
+				enemy.defense = (rs.getInt("defense"));
+				enemy.hp = (rs.getInt("hp"));
+				enemy.exp = (rs.getInt("exp"));
+				Some(enemy);
+			} else {
+				None;
+			}
+	}
 }
