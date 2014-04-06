@@ -121,7 +121,7 @@ object Database {
 		val statement = conn.prepareStatement("UPDATE `foursquarerpg`.`venue` " +
 				"SET " +
 				"`enemy_id` = "+enemyId+" " +
-				"WHERE `venue_id` = '"+venue+"';");
+				"WHERE `id` = '"+getVenueIdFromFsqVenueId(venueId)+"';");
 		statement.executeUpdate();
 	}
 	def makeEnemy(name: String, attack: Int, defense: Int, hp: Int, exp: Int): Enemy = {
