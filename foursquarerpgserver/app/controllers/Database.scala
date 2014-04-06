@@ -143,7 +143,7 @@ object Database {
 	}
 	def getMaxEnemy(): Int = {
 			val conn = sessionFactory.getConnection();
-			val statement = conn.prepareStatement("select max(id) from enemy");
+			val statement = conn.prepareStatement("select max(id) from `foursquarerpg`.`enemy`");
 			val rs = statement.executeQuery();
 			if(rs.next()) {
 				rs.getInt("max(id)");
@@ -152,7 +152,7 @@ object Database {
 	}
 	def getEnemy(id: Int): Enemy = {
 			val conn = sessionFactory.getConnection();
-			val statement = conn.prepareStatement("SELECT * FROM enemy e WHERE e.id = ?");
+			val statement = conn.prepareStatement("SELECT * FROM `foursquarerpg`.`enemy` e WHERE e.id = ?");
 			statement.setInt(1, id);
 			val rs = statement.executeQuery();
 			val enemy = new Enemy();
@@ -168,7 +168,7 @@ object Database {
 	}
 	def getVenueEnemy(venueId: String): Option[Enemy] = {
 			val conn = sessionFactory.getConnection();
-			val statement = conn.prepareStatement("SELECT enemy.* from venue v, enemy e WHERE v.venue_id = '"+venueId+"' AND v.enemy_id = e.id");
+			val statement = conn.prepareStatement("SELECT enemy.* from venue v, `foursquarerpg`.`enemy` e WHERE v.venue_id = '"+venueId+"' AND v.enemy_id = e.id");
 			val rs = statement.executeQuery();
 			if(rs.next()) {
 				val enemy = new Enemy();
