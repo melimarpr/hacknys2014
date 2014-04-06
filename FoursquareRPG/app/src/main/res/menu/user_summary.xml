@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="hackny.foursquarerpg.app.activities.activities.UserSummaryActivity" >
+    
+    <item android:id="@+id/action_settings"
+        android:title="LogOut"
+        android:orderInCategory="100"
+        android:showAsAction="always|withText" />
+</menu>
