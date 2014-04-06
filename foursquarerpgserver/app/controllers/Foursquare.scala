@@ -49,7 +49,7 @@ object Foursquare extends Controller {
 		request => val values = request.body.asFormUrlEncoded.get;
 		println(values);
 		val checkinId = values.get("checkin").get(0);
-		val userId = Json.parse(values.get("user").get(0));
+		val userId = Json.parse(values.get("user").get(0)).\("id");
 		val js = Json.parse(checkinId);
 		val fsqVenueId = js.\("venue").\("id").as[String];
 		val categoryList:List[String] = (js.\\("parents")(0).as[List[String]]);
@@ -71,7 +71,7 @@ object Foursquare extends Controller {
 		}
 		val monsterIntId = enemy.id;
 		val enemyName = enemy.name;
-		sendPush(enemyName,monsterIntId, userId.\("id").toString.toInt);
+		sendPush(enemyName,monsterIntId, userId.as[Int]);
 		Ok(views.html.index("Success!"))
 	}
 
