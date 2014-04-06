@@ -82,8 +82,9 @@ object Foursquare extends Controller {
 		val monsterIntId = enemy.id;
 		val enemyName = enemy.name;
 		val userIntId = userId.toString.replace("\"", "").toInt;
+		println(userIntId);
 		val user = Database.getUser(userIntId);
-
+		println(user);
 		categoriesMap(category.trim()) match {
 		case "HP" => {user.hp += 1}
 		case "Attack" => {user.attack +=1}
