@@ -133,9 +133,9 @@ object Foursquare extends Controller {
 	}
 	def getBattleInfo(userId: Int, enemyId: Int) = Action {
 	  
-	  val user = Database.getUser(userId);
+	  val user = Database.getUser(userId.toString);
 	  val enemy = Database.getEnemy(enemyId);
 	  val map = Map("user" -> gson.toJson(user), "enemy" -> gson.toJson(enemy));
-	  Ok(gson.toJson(map));
+	  Ok(Json.toJson(map));
 	}
 }
