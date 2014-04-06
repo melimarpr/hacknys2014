@@ -87,7 +87,7 @@ object Database {
 			val ds = DB.getDataSource();
 			val conn = ds.getConnection();
 			try {
-				val statement = conn.prepareStatement("INSERT INTO `foursquaregame`.`venue` (`venue_id`, `category`, `name`) VALUES (?,?,?);");
+				val statement = conn.prepareStatement("INSERT INTO `foursquarerpg`.`venue` (`venue_id`, `category`, `name`) VALUES (?,?,?);");
 				statement.setString(1,venueId);
 				statement.setString(2,category);
 				statement.setString(3,name);
