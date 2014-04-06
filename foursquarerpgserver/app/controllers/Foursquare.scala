@@ -101,7 +101,7 @@ object Foursquare extends Controller {
 	def sendPush(enemyName: String, monsterId: Int, userId: Int) {
 		val str = "{\"registration_ids\":[\"APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE\"]}";
 		val generic = new GenericData();
-		generic.put("registration_ids", Array("APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE"))
+		generic.put("registration_ids", Array("APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE","APA91bGIoXLIDm7RFiFdHcm4_cz5ZJz-EVw4pZKyeBGD3ekBaDEoJaF-eRSMGBDgJQhLieBTjav0Ife4TdZnsOsfDcCjF5FJ49phbtD3WbHZPkcpUGGUcyMrFmZMWZk19P71PkMrGu8TA_R8KAstL3fEBJ4EIWY6FtX5Tc8yHOrwCmsoGsj9SYs"))
 		val otherGeneric = new GenericData();
 		otherGeneric.put("key", enemyName);
 		otherGeneric.put("monsterKey", monsterId);
@@ -120,7 +120,7 @@ object Foursquare extends Controller {
 		val user = Database.getUser(userId);
 		val enemy = Database.getEnemy(enemyId);
 		battleType match {
-		case "playerAttack" => {user.stamina -= 1; enemy.hp = Math.max( user.attack - enemy.defense,1); user.hp = Math.max(enemy.attack - user.defense,1)}
+		case "playerAttack" => { user.stamina -= 1; enemy.hp = Math.max( user.attack - enemy.defense,1); user.hp = Math.max(enemy.attack - user.defense,1)}
 		case "playerDefense" => { user.hp = Math.max(enemy.attack - user.defense * 2,1); user.stamina += 1}
 		}
 		val map = Map("userHP" -> user.hp, "userStam" -> user.stamina, "enemyHP" -> enemy.hp);
@@ -130,5 +130,12 @@ object Foursquare extends Controller {
 	}
 	def getEnemyGet(id: Int) = Action {
 		Ok(gson.toJson(Database.getEnemy(id)));
+	}
+	def getBattleInfo(userId: Int, enemyId: Int) = Action {
+	  
+	  val user = Database.getUser(userId);
+	  val enemy = Database.getEnemy(enemyId);
+	  val map = Map("user" -> gson.toJson(user), "enemy" -> gson.toJson(enemy));
+	  Ok(gson.toJson(map));
 	}
 }

@@ -20,7 +20,9 @@ GET		/getUser/					controllers.Foursquare.getUserGet(username: String)
 GET		/doBattle					controllers.Foursquare.doBattle(userId: Int, enemyId: Int, battleType)
 GET		/doBattle/					controllers.Foursquare.doBattle(userId: Int, enemyId: Int, battleType)
 GET		/getEnemy					controllers.Foursquare.getEnemyGet(id: Int)
-GET		/getEnemt/					controllers.Foursquare.getEnemyGet(id: Int)
+GET		/getEnemy/					controllers.Foursquare.getEnemyGet(id: Int)
+GET		/getBattleInfo				controllers.Foursquare.getBattleInfo(userId: Int, enemyId: Int)
+GET		/getBattleInfo/				controllers.Foursquare.getBattleInfo(userId: Int, enemyId: Int)
 
 
 
