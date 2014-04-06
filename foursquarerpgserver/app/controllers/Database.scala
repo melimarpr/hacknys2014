@@ -87,9 +87,9 @@ object Database {
 			val ds = DB.getDataSource();
 			val conn = ds.getConnection();
 			try {
-				val statement = conn.prepareStatement("INSERT INTO `foursquaregame`.`venues` (`venueid`, `category`, `name`) VALUES (?,?,?);");
+				val statement = conn.prepareStatement("INSERT INTO `foursquaregame`.`venue` (`venue_id`, `category`, `name`) VALUES (?,?,?);");
 				statement.setString(1,venueId);
-				statement.setString(2, category);
+				statement.setString(2,category);
 				statement.setString(3,name);
 				statement.execute();
 			}
@@ -101,7 +101,7 @@ object Database {
 			val ds = DB.getDataSource();
 			val conn = ds.getConnection();
 			try {
-				val statement = conn.prepareStatement("SELECT * FROM venues WHERE venue_id = ?");
+				val statement = conn.prepareStatement("SELECT * FROM venue WHERE venue_id = ?");
 				statement.setString(1,fsqVenueId);
 				val result = statement.executeQuery();
 				if(result.next()) {
