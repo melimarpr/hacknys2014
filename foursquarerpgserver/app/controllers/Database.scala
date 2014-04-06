@@ -191,7 +191,7 @@ object Database {
 				"`attack` = "+ user.attack +", " +
 				"`defense` = "+user.defense+", " +
 				"`hp` = "+user.hp+", " +
-				"`exp` = "+user.experience  +
+				"`exp` = "+user.experience+ " "  +
 				"HERE `id` = "+user.id+";");
 		statement.executeUpdate();
 
@@ -202,7 +202,7 @@ object Database {
 				"SET " +
 				"`attack` = "+ enemy.attack +", " +
 				"`defense` = "+enemy.defense+", " +
-				"`hp` = "+enemy.hp+", " +
+				"`hp` = "+enemy.hp+" " +
 				"HERE `id` = "+enemy.id+";");
 		statement.executeUpdate();
 
