@@ -15,11 +15,12 @@ import com.google.api.client.http.HttpHeaders
 import fi.foyt.foursquare.api.entities.Checkin
 import play.api.libs.json.Json
 import org.json.JSONObject
+import com.google.api.client.util.GenericData
 
 object Foursquare extends Controller {
 	val fsq = new FoursquareApi(FoursquareCredentials.CLIENT_ID, FoursquareCredentials.CLIENT_SECRET, FoursquareCredentials.PUSH_SECRET);
-		  val requestFactory = new NetHttpTransport().createRequestFactory();
-		  val gson = new Gson();
+	val requestFactory = new NetHttpTransport().createRequestFactory();
+	val gson = new Gson();
 	def redirectGet(code: String) = Action {
 		println(code)
 		fsq.authenticateCode(code)
@@ -36,42 +37,45 @@ object Foursquare extends Controller {
 	}
 	def sendToken(token: String) = Action {
 
-	  fsq.setoAuthToken(token);
-	  val username = fsq.user("self").getResult().getId();
-	  Ok(gson.toJson(Database.addUser(username, token)))
+		fsq.setoAuthToken(token);
+		val username = fsq.user("self").getResult().getId();
+		Ok(gson.toJson(Database.addUser(username, token)))
 	}
 	def handlePush = Action {
 		request => val values = request.body.asFormUrlEncoded.get;
 		println(values);
-				val checkinId = values.get("checkin").get(0)
-						val js = Json.parse(checkinId);
-				val fsqVenueId = js.\("venue").\("id").as[String];
-				val categoryList:List[String] = (js.\\("parents")(0).as[List[String]]);
-				val category = categoryList(0);
-				val name = (js \ ("venue")).\("name").as[String];
-				println(fsqVenueId);
-				println(category);
-				println(name);
-				var dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
-				if(!dbId.isDefined) {
-					Database.addVenue(fsqVenueId, category, name);
-					dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
-				}
-				sendPush();
-				Ok(views.html.index("Success!"))
+		val checkinId = values.get("checkin").get(0)
+				val js = Json.parse(checkinId);
+		val fsqVenueId = js.\("venue").\("id").as[String];
+		val categoryList:List[String] = (js.\\("parents")(0).as[List[String]]);
+		val category = categoryList(0);
+		val name = (js \ ("venue")).\("name").as[String];
+		println(fsqVenueId);
+		println(category);
+		println(name);
+		var dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
+		if(!dbId.isDefined) {
+			Database.addVenue(fsqVenueId, category, name);
+			dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
+		}
+		sendPush();
+		Ok(views.html.index("Success!"))
 	}
-	
+
 	def getUserGet(username: String) = Action {
-	  Ok(gson.toJson(Database.getUser(username)));
+		Ok(gson.toJson(Database.getUser(username)));
 	}
 	def sendPush() {
-		val json = new JsonHttpContent(new JacksonFactory(), new JSONObject("{\"registration_ids\":[\"APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE\"]}"));
+		val str = "{\"registration_ids\":[\"APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE\"]}";
+		val generic = new GenericData();
+		generic.put("registration_ids", Array("APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE"))
+		val json = new JsonHttpContent(new JacksonFactory(),generic);
 		val post = requestFactory.buildPostRequest(new GenericUrl("https://android.googleapis.com/gcm/send"), json);
 		val header = new HttpHeaders();
 		header.setContentType("application/json");
 		header.setAuthorization("key=AIzaSyAe1TgUXvuoWJTcYPNCIvCgM0r4yD4MnC0");
 		post.setHeaders(header);
 		post.execute();
-	  
+
 	}
 }
