@@ -152,7 +152,7 @@ object Database {
 	}
 	def getEnemy(id: Int): Enemy = {
 			val conn = sessionFactory.getConnection();
-			val statement = conn.prepareStatement("SELECT * FROM user u WHERE u.id = ?");
+			val statement = conn.prepareStatement("SELECT * FROM enemy e WHERE e.id = ?");
 			statement.setInt(1, id);
 			val rs = statement.executeQuery();
 			val enemy = new Enemy();
