@@ -13,6 +13,7 @@ import com.google.api.client.http.json.JsonHttpContent
 import scala.collection.mutable.HashMap
 import com.google.api.client.http.HttpHeaders
 import fi.foyt.foursquare.api.entities.Checkin
+import play.api.libs.json.Json
 
 object Foursquare extends Controller {
 	val fsq = new FoursquareApi(FoursquareCredentials.CLIENT_ID, FoursquareCredentials.CLIENT_SECRET, FoursquareCredentials.PUSH_SECRET);
@@ -41,7 +42,22 @@ object Foursquare extends Controller {
 	def handlePush = Action {
 		request => val values = request.body.asFormUrlEncoded.get;
 		println(values);
-		Ok("This is /handle_push.");
+				val checkinId = values.get("checkin").get(0)
+						val js = Json.parse(checkinId);
+				val fsqVenueId = js.\("venue").\("id").as[String];
+				val categoryList:List[String] = (js.\\("parents")(0).as[List[String]]);
+				val category = categoryList(0);
+				val name = (js \ ("venue")).\("name").as[String];
+				println(fsqVenueId);
+				println(category);
+				println(name);
+				var dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
+				if(!dbId.isDefined) {
+					Database.addVenue(fsqVenueId, category, name);
+					dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
+				}
+
+				Ok(views.html.index("Success!"))
 	}
 	
 	def getUserGet(username: String) = Action {
@@ -51,7 +67,7 @@ object Foursquare extends Controller {
 	  val map = new HashMap[String,Array[String]]();
 	  map += "registrations_ids" -> Array("APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE");
 	  val json = new JsonHttpContent(new JacksonFactory(), map);
-	  val post = requestFactory.buildPostRequest(new GenericUrl("https://android.googleapis.com/gcm/send"), json)
+	  val post = requestFactory.buildPostRequest(new GenericUrl("https://android.googleapis.com/gcm/send"), json);
 			  val header = new HttpHeaders();
 	  header.setContentType("application/json");
 	  header.setAuthorization("key=AIzaSyAe1TgUXvuoWJTcYPNCIvCgM0r4yD4MnC0");
