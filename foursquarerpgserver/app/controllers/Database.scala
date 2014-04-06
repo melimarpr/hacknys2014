@@ -5,6 +5,7 @@ import play.api.db._
 import play.api.mvc._
 import hibernate.UserDto
 import classes.Enemy
+import classes.User
 
 object Database {
 	val sessionFactory = DB.getDataSource();
@@ -182,5 +183,28 @@ object Database {
 			} else {
 				None;
 			}
+	}
+	def updateUser(user: UserDto) {
+		val conn = sessionFactory.getConnection();
+		val statement = conn.prepareStatement("UPDATE `foursquarerpg`.`user` " +
+				"SET " +
+				"`attack` = "+ user.attack +", " +
+				"`defense` = "+user.defense+", " +
+				"`hp` = "+user.hp+", " +
+				"`exp` = "+user.experience  +
+				"HERE `id` = "+user.id+";");
+		statement.executeUpdate();
+
+	}
+	def updateEnemy(enemy: Enemy) {
+		val conn = sessionFactory.getConnection();
+		val statement = conn.prepareStatement("UPDATE `foursquarerpg`.`enemy` " +
+				"SET " +
+				"`attack` = "+ enemy.attack +", " +
+				"`defense` = "+enemy.defense+", " +
+				"`hp` = "+enemy.hp+", " +
+				"HERE `id` = "+enemy.id+";");
+		statement.executeUpdate();
+
 	}
 }

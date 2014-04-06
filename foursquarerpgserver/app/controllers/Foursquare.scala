@@ -15,6 +15,7 @@ import play.api.mvc.Action
 import play.api.mvc.Controller
 import classes.Enemy
 
+
 object Foursquare extends Controller {
 	val fsq = new FoursquareApi(FoursquareCredentials.CLIENT_ID, FoursquareCredentials.CLIENT_SECRET, FoursquareCredentials.PUSH_SECRET);
 	val requestFactory = new NetHttpTransport().createRequestFactory();
@@ -70,9 +71,9 @@ object Foursquare extends Controller {
 		} else {
 			enemy = Database.makeEnemy("", 10, 10, 10, 10);
 			Database.addEnemyToVenue(enemy.id, fsqVenueId);
-			
+
 		}
-		
+
 		val monsterIntId = enemy.id;
 		val enemyName = enemy.name;
 		sendPush(enemyName,monsterIntId, userId.toString.replace("\"", "").toInt);
@@ -99,5 +100,20 @@ object Foursquare extends Controller {
 		post.setHeaders(header);
 		post.execute();
 
+	}
+	def doBattle(userId: Int, enemyId: Int, battleType: String) = Action {
+		val user = Database.getUser(userId);
+		val enemy = Database.getEnemy(enemyId);
+		battleType match {
+		case "playerAttack" => {user.stamina -= 1; enemy.hp = Math.max( user.attack - enemy.defense,1); user.hp = Math.max(enemy.attack - user.defense,1)}
+		case "playerDefense" => { user.hp = Math.max(enemy.attack - user.defense * 2,1); user.stamina += 1}
+		}
+		val map = Map("userHP" -> user.hp, "userStam" -> user.stamina, "enemyHP" -> enemy.hp);
+		Database.updateEnemy(enemy);
+		Database.updateUser(user);
+		Ok(Json.toJson(map));
+	}
+	def getEnemyGet(id: Int) = Action {
+		Ok(gson.toJson(Database.getEnemy(id)));
 	}
 }
