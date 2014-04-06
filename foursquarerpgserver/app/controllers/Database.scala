@@ -114,4 +114,31 @@ object Database {
 				conn.close();
 			}
 	}
+//	def makeEnemy(name: String, attack: Int, defense: Int, hp: Int, exp: Int): EnemyDto = {
+//	  val someUser = getUser(username);
+//	  if(someUser.id > 0) {
+//	    return someUser;
+//	  }
+//			val conn = sessionFactory.getConnection();
+//			val statement = conn.prepareStatement("INSERT INTO `foursquarerpg`.`user` " +
+//					"(`username`, " +
+//					"`token`, " +
+//					"`hp`, "+ 
+//					"`attack`, " +
+//					"`defense`, " +
+//					"`stamina`, " +
+//					"`exp`, " +
+//					"`gold`) " +
+//					"VALUES " +
+//					"('" + username + "', " +
+//					"'" + token + "', " +
+//					"10, " +
+//					"10, " +
+//					"10, " +
+//					"10, " +
+//					"10, " +
+//					"10);");
+//			statement.execute();
+//			getUser(getMaxUser);
+//	}
 }

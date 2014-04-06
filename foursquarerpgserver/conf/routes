@@ -15,5 +15,8 @@ POST	/redirect/					controllers.Foursquare.redirectPost
 POST	/handle_push/				controllers.Foursquare.handlePush
 GET		/sendToken					controllers.Foursquare.sendToken(token: String)
 GET		/sendToken/					controllers.Foursquare.sendToken(token: String)
+GET		/getUser					controllers.Foursquare.getUserGet(username: String)
+GET		/getUser/					controllers.Foursquare.getUserGet(username: String)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
