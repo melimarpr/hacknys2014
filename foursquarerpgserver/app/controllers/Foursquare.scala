@@ -59,6 +59,7 @@ object Foursquare extends Controller {
 		println(fsqVenueId);
 		println(category);
 		println(name);
+
 		var dbId = Database.getVenueIdFromFsqVenueId(fsqVenueId);
 		if(!dbId.isDefined) {
 			Database.addVenue(fsqVenueId, category, name);
@@ -69,14 +70,27 @@ object Foursquare extends Controller {
 		if(enemyOption.isDefined) {
 			enemy = enemyOption.get;
 		} else {
-			enemy = Database.makeEnemy("", 10, 10, 10, 10);
+			enemy = Database.makeEnemy("UglyGuy", 10, 10, 10, 10);
 			Database.addEnemyToVenue(enemy.id, fsqVenueId);
 
 		}
-
+		categoriesMap(category.trim()) match {
+		case "HP" => {}
+		case "Attack" => {}
+		case "Defense" => {}
+		}
 		val monsterIntId = enemy.id;
 		val enemyName = enemy.name;
-		sendPush(enemyName,monsterIntId, userId.toString.replace("\"", "").toInt);
+		val userIntId = userId.toString.replace("\"", "").toInt;
+		val user = Database.getUser(userIntId);
+
+		categoriesMap(category.trim()) match {
+		case "HP" => {user.hp += 1}
+		case "Attack" => {user.attack +=1}
+		case "Defense" => {user.defense +=1}
+		}
+		Database.updateUser(user);
+		sendPush(enemyName,monsterIntId, userIntId);
 		Ok(views.html.index("Success!"))
 	}
 
