@@ -71,7 +71,7 @@ object Foursquare extends Controller {
 		}
 		val monsterIntId = enemy.id;
 		val enemyName = enemy.name;
-		sendPush(enemyName,monsterIntId, userId.as[Int]);
+		sendPush(enemyName,monsterIntId, userId.toString.trim().toInt);
 		Ok(views.html.index("Success!"))
 	}
 
