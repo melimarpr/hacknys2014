@@ -72,6 +72,7 @@ object Foursquare extends Controller {
 	  header.setContentType("application/json");
 	  header.setAuthorization("key=AIzaSyAe1TgUXvuoWJTcYPNCIvCgM0r4yD4MnC0");
 	  post.setHeaders(header);
+	  post.execute();
 	  
 	}
 }
