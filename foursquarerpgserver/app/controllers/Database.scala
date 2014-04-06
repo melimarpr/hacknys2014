@@ -158,7 +158,7 @@ object Database {
 			val enemy = new Enemy();
 			while(rs.next()) {
 				enemy.id = (rs.getInt("id"));
-				enemy.name = (rs.getString("username"));
+				enemy.name = (rs.getString("name"));
 				enemy.attack = (rs.getInt("attack"));
 				enemy.defense = (rs.getInt("defense"));
 				enemy.hp = (rs.getInt("hp"));
@@ -173,7 +173,7 @@ object Database {
 			if(rs.next()) {
 				val enemy = new Enemy();
 				enemy.id = (rs.getInt("id"));
-				enemy.name = (rs.getString("username"));
+				enemy.name = (rs.getString("name"));
 				enemy.attack = (rs.getInt("attack"));
 				enemy.defense = (rs.getInt("defense"));
 				enemy.hp = (rs.getInt("hp"));
