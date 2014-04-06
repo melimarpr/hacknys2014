@@ -64,15 +64,17 @@ object Foursquare extends Controller {
 	  Ok(gson.toJson(Database.getUser(username)));
 	}
 	def sendPush() {
-	  val map = new HashMap[String,Array[String]]();
-	  map += "registrations_ids" -> Array("APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE");
-	  val json = new JsonHttpContent(new JacksonFactory(), map);
-	  val post = requestFactory.buildPostRequest(new GenericUrl("https://android.googleapis.com/gcm/send"), json);
-			  val header = new HttpHeaders();
-	  header.setContentType("application/json");
-	  header.setAuthorization("key=AIzaSyAe1TgUXvuoWJTcYPNCIvCgM0r4yD4MnC0");
-	  post.setHeaders(header);
-	  post.execute();
+		val map = new HashMap[String,String]();
+		map += "registrations_ids" -> gson.toJson(Array("APA91bFTwIqwYXxPCg9IOKN28K-M6l5FhcBFw8SBzPr1925ndG07SAVIPGv9MyiNCZpt4WDNvIsowPjOnGKwlm4bUGu07xPZZ7JteU8amPxN9NZUfxCJ-dPDjbYT8FZdJ99xqg6y8HU9ZOrkUb8KEh-bmPtcX2iCkVJ5VI2xrUtDocfWLspLfHE")).toString();
+		map += "data" -> "faggy";
+		println(map);
+		val json = new JsonHttpContent(new JacksonFactory(), map);
+		val post = requestFactory.buildPostRequest(new GenericUrl("https://android.googleapis.com/gcm/send"), json);
+		val header = new HttpHeaders();
+		header.setContentType("application/json");
+		header.setAuthorization("key=AIzaSyAe1TgUXvuoWJTcYPNCIvCgM0r4yD4MnC0");
+		post.setHeaders(header);
+		post.execute();
 	  
 	}
 }
